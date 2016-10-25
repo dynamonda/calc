@@ -1,5 +1,6 @@
 class Invoker
-  def initialize()
+  def initialize(receiver)
+    @receiver = receiver
     @commands = []
     @used_commands = []
   end
