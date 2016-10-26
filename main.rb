@@ -35,6 +35,8 @@ class Client
             @receiver.show
           elsif command.is_a?(TerminalExpression_Stack) then
             @invoker.show_commands
+          elsif command.is_a?(TerminalExpression_Help) then
+            command.print_help
           else
             puts 'Exit Calc Bye'
             loop_flag = false 

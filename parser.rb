@@ -125,11 +125,19 @@ class TerminalExpression_Exec < Expression
 end
 
 class TerminalExpression_Help < Expression
-  def initialize
+  def interpret(stack)
+    stack.push(self)
   end
 
-  def interpret(invoker)
-    puts '------ Help ------'
+  def print_help
+    puts '====== help ======'
+    puts '> [number] add : insert Add [num] Command into stack'
+    puts '> [number] sub : insert Sub [num] Command into stack'
+    puts '> exec : Execute commands in stack'
+    puts '> stack : Print commands in stack'
+    puts '> help : Print help message'
+    puts '> exit : This program exit'
+    puts '=================='
   end
 
   def to_s 
