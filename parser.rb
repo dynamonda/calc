@@ -1,9 +1,5 @@
 require './command.rb'
 
-# initialize トークンに分離して配列に入れる
-# evaluate   構文木を生成
-# execute    コマンド実行
-
 class Parser
   def initialize(lexer, receiver)
     @@receiver = receiver
@@ -25,6 +21,10 @@ class Parser
           @parse_list.push(TerminalExpression_Help.new)
         when 'stack' then
           @parse_list.push(TerminalExpression_Stack.new)
+        when 'memento' then
+          @parse_list.push(TerminalExpression_Memento.new)
+        when 'restore' then
+          @parse_list.push(TerminalExpression_Restore.new)
         when 'exit' then
           @parse_list.push(TerminalExpression_Exit.new)
         else
@@ -147,6 +147,27 @@ end
 
 class TerminalExpression_Stack < Expression
   def interpret(stack)
+    stack.push(self)
+  end
+end
+
+class TerminalExpression_Memento < Expression
+  def interpret(stack)
+    stack.push(self)
+  end
+end
+
+class TerminalExpression_Restore < Expression
+  attr_reader :index
+  def initialize
+    @index = -1
+  end
+
+  def interpret(stack)
+    num = stack.pop
+    if num.is_a?(TerminalExpression_Number) then
+      @index = num.to_i
+    end
     stack.push(self)
   end
 end

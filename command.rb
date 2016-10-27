@@ -14,6 +14,9 @@ class Command
   def print()
     puts 'ERROR'
   end
+
+  def to_s
+  end
 end
 
 
@@ -34,6 +37,10 @@ class AddCommand < Command
   def print()
     puts "Command: Add #{@num}"
   end
+
+  def to_s
+    "add #{@num}"
+  end
 end
 
 class SubCommand < Command
@@ -52,6 +59,10 @@ class SubCommand < Command
 
   def print()
     puts "Command: Sub #{@num}"
+  end
+
+  def to_s
+    "sub #{@num}"
   end
 end
 

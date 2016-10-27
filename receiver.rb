@@ -1,4 +1,6 @@
 class Receiver
+  attr_accessor :A
+
   def initialize()
     @A = 0
   end

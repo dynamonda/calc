@@ -5,6 +5,7 @@ require './invoker.rb'
 require './receiver.rb'
 require './lexer.rb'
 require './parser.rb'
+require './memento.rb'
 
 class Client
   def initialize()
@@ -12,18 +13,18 @@ class Client
 
     @receiver = Receiver.new()
     @invoker = Invoker.new(@receiver)
-
-    @receiver.show()
+    
+    @originator = Originator.new(@receiver, @invoker)
+    @caretaker = Caretaker.new
   end
 
   def update()
     @invoker.show_commands
     @invoker.show_used_commands
-    @receiver.show
 
     loop_flag = true
     while loop_flag do
-      input = Readline.readline("> ")
+      input = Readline.readline("A:[#{@receiver.A}]> ")
       parser = Parser.new(Lexer.new(input), @receiver) # 解析
       if(parser.parse_check?)
         command = parser.evaluate   # 実行
@@ -35,6 +36,10 @@ class Client
             @receiver.show
           elsif command.is_a?(TerminalExpression_Stack) then
             @invoker.show_commands
+          elsif command.is_a?(TerminalExpression_Memento) then
+            @caretaker.add_memento(@originator.save_to_memento)
+          elsif command.is_a?(TerminalExpression_Restore) then
+            @originator.restore_from_memento(@caretaker.get_memento(command.index))
           elsif command.is_a?(TerminalExpression_Help) then
             command.print_help
           else

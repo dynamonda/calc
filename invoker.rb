@@ -1,4 +1,6 @@
 class Invoker
+  attr_accessor :commands, :used_commands
+
   def initialize(receiver)
     @receiver = receiver
     @commands = []
